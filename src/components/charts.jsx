@@ -1,6 +1,6 @@
 import { MONTHS, money, num } from '../format.js';
 
-/** Horizontal bars.  rows: [{ label, value }] */
+/** Horizontal bars.   rows: [{ label, value }] */
 export function BarList({ rows, format = num, empty = 'No data yet.' }) {
   if (!rows.length) return <p className="muted chart-empty">{empty}</p>;
   const max = Math.max(...rows.map((r) => r.value), 1);
