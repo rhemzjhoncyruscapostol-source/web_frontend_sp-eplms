@@ -1,7 +1,16 @@
 // Small fetch wrapper: adds the access token, and when it has expired quietly
 // swaps the refresh token for a new pair and retries the request once.
 
-const BASE = import.meta.env.VITE_API_URL || '/api';
+const configuredBase = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '');
+const BASE = (() => {
+  try {
+    const configuredUrl = new URL(configuredBase, window.location.origin);
+    if (configuredUrl.origin === 'https://web-sp-eplms.onrender.com') return '/api';
+  } catch {
+    // Keep the configured value so malformed URLs fail with the normal fetch error.
+  }
+  return configuredBase;
+})();
 const KEY = 'ormindoro.session';
 
 let session = null;
