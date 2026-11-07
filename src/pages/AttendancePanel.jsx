@@ -5,6 +5,7 @@ import { useAuth } from '../auth.jsx';
 import { fmtDate, fmtDateTime, today } from '../format.js';
 import { Button, ErrorBox, Loading } from '../components/ui.jsx';
 
+//wala
 const OPERATOR_EMAIL = 'attendance@system.com';
 const PUNCHES = [
   ['time_in', 'First in'],
