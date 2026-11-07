@@ -4,7 +4,7 @@ import { money, num } from '../format.js';
 import { BarList, BudgetBars, ChartPanel, Columns } from '../components/charts.jsx';
 import { ErrorBox, Loading, StatStrip, useLoad } from '../components/ui.jsx';
 
-// haha
+//
 export default function AnalyticsDashboard() {
   const thisYear = new Date().getFullYear();
   const [office, setOffice] = useState('');
