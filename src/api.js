@@ -105,18 +105,22 @@ async function request(path, { method = 'GET', body, auth = true, retry = true, 
 
   if (res.ok && blob) return res.blob();
 
+  const contentType = res.headers.get('content-type') || 'unknown content type';
+  const responseText = await res.text();
   let data = null;
-  let invalidResponse = false;
   try {
-    data = await res.json();
+    data = responseText ? JSON.parse(responseText) : null;
   } catch {
-    invalidResponse = true;
+    data = null;
   }
   if (!res.ok) {
     throw new ApiError((data && data.error) || `Something went wrong (${res.status}).`, res.status, data && data.errors);
   }
-  if (invalidResponse || data === null) {
-    throw new ApiError('The server returned an invalid response. Please try again.', res.status);
+  if (data === null) {
+    throw new ApiError(
+      `The server returned an unexpected response (HTTP ${res.status}, ${contentType}). Please retry; if it continues, share this status with support.`,
+      res.status
+    );
   }
   return data;
 }
