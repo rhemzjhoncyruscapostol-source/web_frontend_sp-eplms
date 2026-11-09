@@ -107,9 +107,10 @@ async function request(path, { method = 'GET', body, auth = true, retry = true, 
 
   const contentType = res.headers.get('content-type') || 'unknown content type';
   const responseText = await res.text();
+  const trimmedResponse = responseText.trim();
   let data = null;
   try {
-    data = responseText ? JSON.parse(responseText) : null;
+    data = trimmedResponse ? JSON.parse(trimmedResponse) : null;
   } catch {
     data = null;
   }
@@ -117,8 +118,9 @@ async function request(path, { method = 'GET', body, auth = true, retry = true, 
     throw new ApiError((data && data.error) || `Something went wrong (${res.status}).`, res.status, data && data.errors);
   }
   if (data === null) {
+    const responseKind = trimmedResponse === 'null' ? 'JSON null' : 'an empty or invalid JSON body';
     throw new ApiError(
-      `The server returned an unexpected response (HTTP ${res.status}, ${contentType}). Please retry; if it continues, share this status with support.`,
+      `The server returned ${responseKind} (HTTP ${res.status}, ${contentType}). Please retry; if it continues, share this message with support.`,
       res.status
     );
   }
