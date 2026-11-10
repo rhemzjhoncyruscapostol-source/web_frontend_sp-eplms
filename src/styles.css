@@ -2130,7 +2130,7 @@ textarea.input {
   min-height: 78px;
   padding: 10px 15px;
   display: grid;
-  grid-template-columns: minmax(215px, 1fr) auto minmax(150px, 1fr);
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: clamp(16px, 2.8vw, 42px);
   border: 1px solid rgba(255, 255, 255, .42);
@@ -2320,6 +2320,7 @@ textarea.input {
   font-weight: 750;
   text-decoration: none;
   transition: transform .2s ease, box-shadow .2s ease;
+  margin-left: auto;
 }
 .civic-login:hover {
   transform: translateY(-1px);
