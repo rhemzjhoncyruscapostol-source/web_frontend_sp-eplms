@@ -1,30 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../auth.jsx';
 import { homeFor } from '../roles.js';
 import { Seal } from '../components/Seal.jsx';
 import { Button, TextField } from '../components/ui.jsx';
-
-const ABOUT_LINKS = [
-  ['The Province', '/page/the-province'],
-  ['History', '/page/history'],
-  ['Investments & Opportunities', '/page/investments-opportunities'],
-  ['Cities & Municipalities', '/page/cities-municipalities'],
-];
-
-const OFFICIALS_LINKS = [
-  ['Governor', '/page/governor'],
-  ['Sangguniang Panlalawigan', '/page/sangguniang-panlalawigan'],
-  ['Department Heads', '/page/department-heads'],
-];
-
-const TRANSPARENCY_LINKS = [
-  ['Financial Report', '/page/financial-report'],
-  ['Procurement Documents', '/page/procurement-documents'],
-  ['Financial Assistance', '/page/financial-assistance'],
-  ['Executive Orders', '/page/executive-orders'],
-];
 
 export default function Login() {
   const { user, loading, login, verifyOtp } = useAuth();
@@ -38,34 +18,6 @@ export default function Login() {
   const [info, setInfo] = useState('');
   const [busy, setBusy] = useState(false);
   const [forgot, setForgot] = useState(false);
-  const [openMenu, setOpenMenu] = useState(null);
-  const [officialsOpen, setOfficialsOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const bannerRef = useRef(null);
-
-  useEffect(() => {
-    if (!openMenu && !mobileMenuOpen) return undefined;
-    const closeOnOutsideClick = (event) => {
-      if (!bannerRef.current?.contains(event.target)) {
-        setOpenMenu(null);
-        setOfficialsOpen(false);
-        setMobileMenuOpen(false);
-      }
-    };
-    const closeOnEscape = (event) => {
-      if (event.key === 'Escape') {
-        setOpenMenu(null);
-        setOfficialsOpen(false);
-        setMobileMenuOpen(false);
-      }
-    };
-    document.addEventListener('pointerdown', closeOnOutsideClick);
-    document.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.removeEventListener('pointerdown', closeOnOutsideClick);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [openMenu, mobileMenuOpen]);
 
   if (!loading && user) return <Navigate to={homeFor(user.role)} replace />;
 
@@ -125,7 +77,7 @@ export default function Login() {
 
   return (
     <div className="login">
-      <header className="login-banner" ref={bannerRef}>
+      <header className="login-banner">
         <Link className="login-banner-brand" to="/province-home" aria-label="Province of Oriental Mindoro home">
           <span className="login-banner-seal"><Seal size={48} /></span>
           <span className="login-banner-copy">
@@ -133,78 +85,6 @@ export default function Login() {
             <strong>Oriental Mindoro</strong>
           </span>
         </Link>
-        <nav id="login-primary-navigation" className={`login-banner-nav${mobileMenuOpen ? ' mobile-open' : ''}`} aria-label="Province navigation">
-          <div className="login-banner-dropdown">
-            <button
-              type="button"
-              className="login-banner-trigger"
-              aria-expanded={openMenu === 'about'}
-              aria-controls="login-about-menu"
-              onClick={() => {
-                setOpenMenu((menu) => (menu === 'about' ? null : 'about'));
-                setOfficialsOpen(false);
-              }}
-            >
-              ABOUT <span className="login-banner-chevron" aria-hidden="true" />
-            </button>
-            <div className={`login-banner-menu${openMenu === 'about' ? ' open' : ''}`} id="login-about-menu" aria-hidden={openMenu !== 'about'}>
-              {ABOUT_LINKS.map(([label, href]) => (
-                <Link to={href} key={label} tabIndex={openMenu === 'about' ? 0 : -1}>{label}</Link>
-              ))}
-              <div className="login-banner-submenu">
-                <button
-                  type="button"
-                  className="login-banner-submenu-trigger"
-                  aria-expanded={openMenu === 'about' && officialsOpen}
-                  aria-controls="login-officials-menu"
-                  tabIndex={openMenu === 'about' ? 0 : -1}
-                  onClick={() => setOfficialsOpen((isOpen) => !isOpen)}
-                >
-                  Officials <span className="login-banner-chevron" aria-hidden="true" />
-                </button>
-                <div className={`login-banner-menu login-banner-menu-nested${openMenu === 'about' && officialsOpen ? ' open' : ''}`} id="login-officials-menu" aria-hidden={openMenu !== 'about' || !officialsOpen}>
-                  {OFFICIALS_LINKS.map(([label, href]) => (
-                    <Link to={href} key={label} tabIndex={openMenu === 'about' && officialsOpen ? 0 : -1}>{label}</Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          <Link to="/page/departments">DEPARTMENTS</Link>
-          <div className="login-banner-dropdown">
-            <button
-              type="button"
-              className="login-banner-trigger"
-              aria-expanded={openMenu === 'transparency'}
-              aria-controls="login-transparency-menu"
-              onClick={() => {
-                setOpenMenu((menu) => (menu === 'transparency' ? null : 'transparency'));
-                setOfficialsOpen(false);
-              }}
-            >
-              TRANSPARENCY <span className="login-banner-chevron" aria-hidden="true" />
-            </button>
-            <div className={`login-banner-menu${openMenu === 'transparency' ? ' open' : ''}`} id="login-transparency-menu" aria-hidden={openMenu !== 'transparency'}>
-              {TRANSPARENCY_LINKS.map(([label, href]) => (
-                <Link to={href} key={label} tabIndex={openMenu === 'transparency' ? 0 : -1}>{label}</Link>
-              ))}
-            </div>
-          </div>
-        </nav>
-        <button
-          type="button"
-          className={`login-banner-toggle${mobileMenuOpen ? ' active' : ''}`}
-          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="login-primary-navigation"
-          onClick={() => {
-            setMobileMenuOpen((isOpen) => !isOpen);
-            setOpenMenu(null);
-            setOfficialsOpen(false);
-          }}
-        >
-          <span /><span /><span />
-        </button>
       </header>
       <section className="login-side">
         <Seal size={64} />
