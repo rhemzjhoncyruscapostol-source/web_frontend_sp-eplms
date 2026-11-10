@@ -154,7 +154,6 @@ export default function PublicHome() {
                 ))}
               </div>
             </div>
-            <Link to="/page/news-updates">NEWS &amp; UPDATES</Link>
           </nav>
           <button
             type="button"
