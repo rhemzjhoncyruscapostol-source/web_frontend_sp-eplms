@@ -2086,8 +2086,9 @@ textarea.input {
 }
 .civic-hero-image {
   background-image: url('/sangguniang-panlalawigan.png');
-  background-position: center;
-  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .civic-hero-title {
   position: absolute;
