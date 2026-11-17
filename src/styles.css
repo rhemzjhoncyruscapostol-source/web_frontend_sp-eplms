@@ -1128,6 +1128,7 @@ textarea.input {
     radial-gradient(ellipse at 82% 22%, rgba(48, 143, 105, .38), transparent 37%),
     url('/sangguniang-panlalawigan.png') center / cover no-repeat,
     linear-gradient(135deg, #102f2b 0%, #1b4d42 46%, #0d2c2b 100%);
+  background-size: auto, auto, auto, 100% 100%, auto;
 }
 .login-banner {
   position: relative;
