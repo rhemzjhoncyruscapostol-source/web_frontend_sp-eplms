@@ -1106,10 +1106,11 @@ textarea.input {
   grid-template-rows: auto 1fr;
   align-items: center;
   gap: clamp(22px, 3.2vw, 48px);
-  max-width: 1360px;
+  width: 100%;
+  max-width: none;
   min-height: 100vh;
   min-height: 100svh;
-  margin: 0 auto;
+  margin: 0;
   padding: clamp(18px, 2.5vw, 32px) clamp(20px, 3vw, 42px) clamp(18px, 2.5vw, 26px);
   overflow: hidden;
   background:
