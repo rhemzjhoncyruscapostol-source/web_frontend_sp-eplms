@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react';
 import { api } from '../api.js';
 import { useAuth } from '../auth.jsx';
 import { fmtDate, money, num, today } from '../format.js';
+import { EmployeePhoto, EmployeePhotoPicker } from '../components/EmployeePhoto.jsx';
 import { Button, Empty, ErrorBox, Loading, Modal, PageHeader, StatusBadge, TextField, useLoad, useToast } from '../components/ui.jsx';
 
 const ALL = '__all__';
 const blank = (office) => ({
-  full_name: '', employee_no: '', job_title: '', department: office === ALL ? '' : office, reports_to: '', date_hired: '', is_active: true, include_in_chart: false,
+  full_name: '', employee_no: '', job_title: '', department: office === ALL ? '' : office, reports_to: '', date_hired: '', photo_url: null, is_active: true, include_in_chart: false,
   monthly_salary: '', salary_effective_from: today(),
   credits: { vacation: 15, sick: 15, special: 3 },
 });
@@ -51,7 +52,7 @@ export default function Employees() {
       emp
         ? {
             full_name: emp.full_name, employee_no: emp.employee_no || '', job_title: emp.job_title, department: emp.department || '',
-            reports_to: emp.reports_to ?? '', date_hired: emp.date_hired || '', is_active: Boolean(emp.is_active), include_in_chart: Boolean(emp.include_in_chart),
+            reports_to: emp.reports_to ?? '', date_hired: emp.date_hired || '', photo_url: emp.photo_url || null, is_active: Boolean(emp.is_active), include_in_chart: Boolean(emp.include_in_chart),
             monthly_salary: String(emp.monthly_salary ?? 0), salary_effective_from: today(),
             credits: { vacation: emp.vacation ?? 0, sick: emp.sick ?? 0, special: emp.special ?? 0 },
           }
@@ -119,7 +120,7 @@ export default function Employees() {
             <tbody>
               {list.map((e) => (
                 <tr key={e.id} tabIndex={0} onClick={() => setView(e)} onKeyDown={(ev) => ev.key === 'Enter' && setView(e)}>
-                  <td><span className="avatar small" aria-hidden="true">{initials(e.full_name)}</span></td>
+                  <td><EmployeePhoto photo={e.photo_url} name={e.full_name} className="small" /></td>
                   <td>{e.employee_no || <span className="muted">-</span>}</td>
                   <td><strong>{e.full_name}</strong></td>
                   <td>{e.job_title}</td>
@@ -151,6 +152,7 @@ export default function Employees() {
         >
           <div className="grid-2 flat">
             <div>
+              <EmployeePhoto photo={view.photo_url} name={view.full_name} className="large profile" />
               <h3>Personal and employment info</h3>
               <dl className="status-list">
                 <div><dt>Employee ID</dt><dd>{view.employee_no || '-'}</dd></div>
@@ -207,6 +209,12 @@ export default function Employees() {
             </>
           }
         >
+          <EmployeePhotoPicker
+            photo={form.photo_url}
+            name={form.full_name}
+            error={errors.photo_url}
+            onChange={(photo_url) => setForm((current) => ({ ...current, photo_url }))}
+          />
           <div className="row">
             <TextField label="Full name" value={form.full_name} onChange={set('full_name')} error={errors.full_name} />
             <TextField label="Employee ID" value={form.employee_no} onChange={set('employee_no')} error={errors.employee_no} hint="Can be used to sign in." />

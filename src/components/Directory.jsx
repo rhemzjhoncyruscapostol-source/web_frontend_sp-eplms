@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import { ErrorBox, Loading, Empty } from './ui.jsx';
+import { EmployeePhoto } from './EmployeePhoto.jsx';
 
 /** Read-only employee directory: name, position and office only. Works without signing in. */
 export default function Directory() {
@@ -99,9 +100,7 @@ export default function Directory() {
           <ul className="cards" aria-busy={loading}>
             {data.employees.map((e) => (
               <li key={e.id} className="person">
-                <div className="node-photo" aria-hidden={!e.photo_url}>
-                  {e.photo_url && <img src={e.photo_url} alt={e.full_name} />}
-                </div>
+                <EmployeePhoto photo={e.photo_url} name={e.full_name} className="directory-photo" />
                 <div className="person-details">
                   <strong>{e.full_name}</strong>
                   <span>{e.job_title}</span>

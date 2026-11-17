@@ -2,6 +2,7 @@ import { useAuth } from '../auth.jsx';
 import { fmtDate, num } from '../format.js';
 import { api } from '../api.js';
 import EmployeeQrCode from '../components/EmployeeQrCode.jsx';
+import { EmployeePhoto } from '../components/EmployeePhoto.jsx';
 import { PageHeader, useLoad } from '../components/ui.jsx';
 
 const Row = ({ label, value }) => (
@@ -17,6 +18,7 @@ export default function MyProfile() {
       <div className="grid-2">
         <section className="panel">
           <h2>Personal and employment info</h2>
+          <EmployeePhoto photo={user.photo_url} name={user.full_name} className="large profile" />
           <dl className="status-list">
             <Row label="Name" value={user.full_name} />
             <Row label="Employee ID" value={user.employee_no} />
